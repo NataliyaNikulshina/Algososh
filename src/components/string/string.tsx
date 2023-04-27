@@ -24,6 +24,7 @@ export const StringComponent: React.FC = () => {
         setArr([...array]);
         await new Promise<void>((res) => setTimeout(res, 1000));
         swap(array, start, end);
+      }
         array[start].color = ElementStates.Modified;
         array[end].color = ElementStates.Modified;
         console.log(array);
@@ -32,7 +33,7 @@ export const StringComponent: React.FC = () => {
         end--;
       }
     }
-  }
+  
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
