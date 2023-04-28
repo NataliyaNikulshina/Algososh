@@ -60,18 +60,19 @@ export const StringComponent: React.FC = () => {
           onChange={onChange}
           value={inputVal}
           maxLength={11}
-          isLimitText
-          extraClass={stringStyle.input}
+          isLimitText={true}
+          type = "text"
         />
         <Button
-          extraClass={stringStyle.button}
           text="Развернуть"
           type="submit"
           isLoader={loader}
+          linkedList="small"
+          disabled={!inputVal}
         />
       </form>
       <ul className={stringStyle.list}>
-        {arr.map(({ el, color }, index) => (
+        {arr && arr.map(({ el, color }, index) => (
           <li key={index}>
             <Circle letter={el} state={color} />
           </li>
