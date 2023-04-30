@@ -10,6 +10,6 @@ export const randomArr = (): TArrColumn[] =>{
     for (let i=0; i<len; i++){
         arr.push({ num: Math.round(Math.random() * 100), color: ElementStates.Default });
     }
-    console.log(len, arr);
+   // console.log(len, arr);
   return arr;
 }
