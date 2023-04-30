@@ -7,6 +7,7 @@ import stringStyle from './string.module.css';
 import { ElementStates } from "../../types/element-states";
 import { TArrCircle } from "../../types/arr-circle";
 import { swap } from "../../utils/swap";
+import { nanoid } from "nanoid";
 
 
 export const StringComponent: React.FC = () => {
@@ -27,7 +28,7 @@ export const StringComponent: React.FC = () => {
       }
         array[start].color = ElementStates.Modified;
         array[end].color = ElementStates.Modified;
-        console.log(array);
+       // console.log(array);
         setArr([...array]);
         start++;
         end--;
@@ -40,12 +41,12 @@ export const StringComponent: React.FC = () => {
     const array = inputVal.split('').map((el: string) => {
       return {el,color: ElementStates.Default}; 
     });
-    console.log(array);
+   // console.log(array);
     setArr(array);
     setLoader(true);
     await reverseElements(array);
     setLoader(false);
-    console.log(loader);
+   // console.log(loader);
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +75,7 @@ export const StringComponent: React.FC = () => {
       <ul className={stringStyle.list}>
         {arr && arr.map(({ el, color }, index) => (
           <li key={index}>
-            <Circle letter={el} state={color} />
+            <Circle key={nanoid()} letter={el} state={color} />
           </li>
         ))}
       </ul>

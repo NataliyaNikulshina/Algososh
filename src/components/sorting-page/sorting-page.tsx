@@ -11,7 +11,7 @@ import { TArrColumn } from "../../types/arr-column";
 import { nanoid } from "nanoid";
 import { swap } from "../../utils/swap";
 
-export const SortingPage: React.FC = () => {
+export const SortingPage: FC = () => {
   const [loader, setLoader] = useState(false);
   const [arr, setArr] = useState<TArrColumn[]>(randomArr());
   const [radioValue, setRadioValue] = useState<"selection" | "bubble">("selection");;
