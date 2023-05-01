@@ -21,7 +21,6 @@ export const StackPage: FC = () => {
 
   const addElement = async () => {
     setLoader(true);
-    //setArr(inputVal.split(''));
     stack.push({ el: inputVal, color: ElementStates.Changing });
     setArr([...stack.getContainer()]);
     setInputVal("");
@@ -30,16 +29,16 @@ export const StackPage: FC = () => {
     stack.peak()!.color = ElementStates.Default;
     setArr([...stack.getContainer()]);
     setCurrIndex(currIndex + 1);
-    console.log(arr);
+    console.log(arr, currIndex);
     setLoader(false);
   }
 
   const deleteElement = async () => {
     setLoader(true);
-    //setArr(inputVal.split(''));
+    stack.peak()!.color = ElementStates.Changing;
+    stack.pop();
     setCurrIndex(stack.getSize() - 1);
     await new Promise<void>((res) => setTimeout(res, 500)); 
-    stack.pop();
     stack.peak()!.color = ElementStates.Default;
     setArr([...stack.getContainer()]);
     setLoader(false);
@@ -47,7 +46,6 @@ export const StackPage: FC = () => {
 
   const clearEl = async () => {
     setLoader(true);
-    //setArr(inputVal.split(''));
     setCurrIndex(stack.getSize() - 1);
     await new Promise<void>((res) => setTimeout(res, 500)); 
     stack.clear();
