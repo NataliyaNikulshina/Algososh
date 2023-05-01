@@ -12,7 +12,7 @@ import { TArrCircle } from "../../types/arr-circle";
 export const StackPage: FC = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const [arr, setArr] = useState<TArrCircle[]>([]);
-  const [currIndex, setCurrIndex] = useState(0);
+  const [currIndex, setCurrIndex] = useState<number>(0);
   const [inputVal, setInputVal] = useState<string>("");
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

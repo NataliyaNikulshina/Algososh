@@ -10,7 +10,7 @@ import { swap } from "../../utils/swap";
 import { nanoid } from "nanoid";
 
 
-export const StringComponent: React.FC = () => {
+export const StringComponent: FC = () => {
   const [inputVal, setInputVal] = useState("");
   const [loader, setLoader] = useState(false);
   const [arr, setArr] = useState<TArrCircle[]>([]);

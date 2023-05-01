@@ -1,0 +1,15 @@
+.form{
+    composes: form from "../stack-page/stack-page.module.css";
+}
+
+.wrapper{
+    composes: wrapper from "../stack-page/stack-page.module.css";
+}
+
+.button{
+    composes: button from "../stack-page/stack-page.module.css";
+}
+
+.list{
+    composes: list from "../stack-page/stack-page.module.css";
+}
