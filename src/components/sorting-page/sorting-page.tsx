@@ -13,7 +13,7 @@ import { swap } from "../../utils/swap";
 
 export const SortingPage: FC = () => {
   const [loader, setLoader] = useState(false);
-  const [arr, setArr] = useState<TArrColumn[]>(randomArr());
+  const [arr, setArr] = useState<TArrColumn[]>(randomArr(3,17));
   const [radioValue, setRadioValue] = useState<"selection" | "bubble">("selection");;
 
   const handleSortArr = (type: Direction) =>{
@@ -112,7 +112,7 @@ export const SortingPage: FC = () => {
           isLoader={loader}
           linkedList="small"
           //disabled={!inputVal}
-          onClick={()=> setArr(randomArr())}
+          onClick={()=> setArr(randomArr(3,17))}
         />
       </form>
       <ul className={sortStyle.list}>
