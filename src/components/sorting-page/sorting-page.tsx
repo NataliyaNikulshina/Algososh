@@ -9,22 +9,28 @@ import { randomArr } from "../../utils/randomArr";
 import { ElementStates } from "../../types/element-states";
 import { TArrColumn } from "../../types/arr-column";
 import { nanoid } from "nanoid";
-import { swap } from "../../utils/swap";
+import { setDelay } from "../../utils/setDelay";
+import { DELAY_IN_MS } from "../../constants/delays";
+import { MAX_LENGTH_RANDOM_ARR, MIN_LENGTH_RANDOM_ARR } from "../../constants/element-captions";
 
 export const SortingPage: FC = () => {
-  const [loader, setLoader] = useState(false);
-  const [arr, setArr] = useState<TArrColumn[]>(randomArr(3,17));
+  const [loader, setLoader] = useState({
+    ascending: false,
+    descending: false,
+    addNewArr: false,
+    disabled: false,
+    loader: false
+  });
+  const [arr, setArr] = useState<TArrColumn[]>(randomArr(MIN_LENGTH_RANDOM_ARR, MAX_LENGTH_RANDOM_ARR));
   const [radioValue, setRadioValue] = useState<"selection" | "bubble">("selection");;
 
   const handleSortArr = (type: Direction) =>{
-    //console.log(type);
-    setLoader(true);
+    type === Direction.Ascending ? setLoader({ ...loader, disabled: true, ascending: true, loader: true }) : setLoader({ ...loader, disabled: true, descending: true, loader: true });
     if (radioValue === "selection") {
       selectionSort(arr, type);
     } else {
       bubbleSort(arr, type);
     }
-    setLoader(false);
   }
 
   const selectionSort = async (arr: TArrColumn[], type: Direction) =>{
@@ -35,7 +41,7 @@ export const SortingPage: FC = () => {
         arr[i].color = ElementStates.Changing;
         arr[j].color = ElementStates.Changing;
         setArr([...arr]);
-        await new Promise<void>((res) => setTimeout(res, 1000));
+        await setDelay(DELAY_IN_MS);
         if (type === Direction.Ascending ? arr[j].num < arr[maxInd].num : arr[j].num > arr[maxInd].num) {
           maxInd = j;
         }
@@ -47,6 +53,7 @@ export const SortingPage: FC = () => {
       arr[i].color = ElementStates.Modified;
     }
     setArr([...arr]);
+    type === Direction.Ascending ? setLoader({ ...loader, disabled: false, ascending: false, loader: false }) : setLoader({ ...loader, disabled: false, descending: false, loader: false});
   }
 
   const bubbleSort = async (arr: TArrColumn[], type: Direction) =>{
@@ -56,16 +63,16 @@ export const SortingPage: FC = () => {
         arr[j].color = ElementStates.Changing;
         arr[j+1].color = ElementStates.Changing;
         setArr([...arr]);
-        await new Promise<void>((res) => setTimeout(res, 1000));
+        await setDelay(DELAY_IN_MS);
         if (type === Direction.Ascending ? arr[j].num > arr[j+1].num : arr[j].num < arr[j+1].num) {
           ([arr[j], arr[j+1]] = [arr[j+1],arr[j]]);  
         };
         arr[j].color = ElementStates.Default;
-       // arr[i-1].color = ElementStates.Modified;
       }
       arr[arr.length - i - 1].color = ElementStates.Modified;
     }
     setArr([...arr]);
+    type === Direction.Ascending ? setLoader({ ...loader, disabled: false, ascending: false, loader: false }) : setLoader({ ...loader, disabled: false, descending: false, loader: false});
   }
 
   return (
@@ -77,7 +84,7 @@ export const SortingPage: FC = () => {
             extraClass={sortStyle.radio}
             value={"selection"} 
             name={"sort"}
-            disabled={loader}
+            disabled={loader.loader}
             onChange={()=>setRadioValue("selection")}
             checked={radioValue==="selection"}
           />
@@ -86,33 +93,33 @@ export const SortingPage: FC = () => {
             extraClass={sortStyle.radio}
             value={"bubble"} 
             name={"sort"}
-            disabled={loader}
+            disabled={loader.loader}
             onChange={()=>setRadioValue("bubble")}
             checked={radioValue==="bubble"}
           />
           <Button
             text="По возрастанию"
-            isLoader={loader}
+            isLoader={loader.ascending}
             extraClass={sortStyle.button}
             sorting={Direction.Ascending}
             onClick={() => handleSortArr(Direction.Ascending)}
-            //disabled={!inputVal}
+            disabled={loader.disabled}
           />
           <Button
             text="По убыванию"
-            isLoader={loader}
+            isLoader={loader.descending}
             extraClass={sortStyle.button}
             sorting={Direction.Descending}
             onClick={() => handleSortArr(Direction.Descending)}
-            //disabled={!inputVal}
+            disabled={loader.disabled}
           />
         </div>
         <Button
           text="Новый массив"
-          isLoader={loader}
+          isLoader={loader.addNewArr}
           linkedList="small"
-          //disabled={!inputVal}
-          onClick={()=> setArr(randomArr(3,17))}
+          disabled={loader.disabled}
+          onClick={()=> setArr(randomArr(MIN_LENGTH_RANDOM_ARR, MAX_LENGTH_RANDOM_ARR))}
         />
       </form>
       <ul className={sortStyle.list}>

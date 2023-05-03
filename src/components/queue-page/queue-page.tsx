@@ -8,6 +8,9 @@ import { nanoid } from "nanoid";
 import { ElementStates } from "../../types/element-states";
 import { TArrCircle } from "../../types/arr-circle";
 import { queue } from "./queue";
+import { setDelay } from "../../utils/setDelay";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { MAX_LENGTH_INPUT } from "../../constants/element-captions";
 
 export const QueuePage: FC = () => {
   const [loader, setLoader] = useState({
@@ -27,11 +30,9 @@ export const QueuePage: FC = () => {
     queue.enqueue({ el: inputVal, color: ElementStates.Changing });
     setArr([...queue.getContainer()]);
     setInputVal("");
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     queue.getContainer()[queue.getTail() - 1].color = ElementStates.Default;
     setArr([...queue.getContainer()]);
-    console.log(arr);
-    console.log(queue.getTail());
     setLoader({ ...loader, add: false });
   };
 
@@ -40,7 +41,7 @@ export const QueuePage: FC = () => {
     setLoader({ ...loader, delete: true });
     queue.getContainer()[queue.getTail() - 1].color = ElementStates.Default;
     setArr([...queue.getContainer()]);
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     queue.dequeue();
     setArr([...queue.getContainer()]);
     setLoader({ ...loader, delete: false });
@@ -48,7 +49,7 @@ export const QueuePage: FC = () => {
 
   const clearEl = async () => {
     setLoader({ ...loader, clear: true });
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     queue.clear();
     setArr([...queue.getContainer()]);
     setLoader({ ...loader, clear: false });
@@ -60,7 +61,7 @@ export const QueuePage: FC = () => {
         <div className={queueStyle.wrapper}>
           <Input
             type = "text"
-            maxLength={4}
+            maxLength={MAX_LENGTH_INPUT}
             isLimitText={true}
             onChange={onChange}
             value={inputVal}

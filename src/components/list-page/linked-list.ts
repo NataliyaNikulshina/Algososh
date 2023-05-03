@@ -1,3 +1,4 @@
+import { MAX_LENGTH_RANDOM_STRARR, MIN_LENGTH_RANDOM_ARR } from "../../constants/element-captions";
 import { TArrCircle } from "../../types/arr-circle";
 import { randomArr, randomArrStr } from "../../utils/randomArr";
 
@@ -160,4 +161,4 @@ export class LinkedList<T> implements ILinkedList<T> {
   }
 }
 
-export const linkedList = new LinkedList<TArrCircle>(randomArrStr(3, 4));
+export const linkedList = new LinkedList<TArrCircle>(randomArrStr(MIN_LENGTH_RANDOM_ARR, MAX_LENGTH_RANDOM_STRARR));

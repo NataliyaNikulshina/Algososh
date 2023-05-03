@@ -4,7 +4,10 @@ import fibStyle from "./fibonacci-page.module.css"
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
-import { getFibonacci } from "../../utils/fibonacci";
+import { getFibonacciNumbers } from "../../utils/fibonacci";
+import { setDelay } from "../../utils/setDelay";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { MAX_VAL_FIB, MIN_VAL_FIB } from "../../constants/element-captions";
 
 export const FibonacciPage: React.FC = () => {
   const [inputVal, setInputVal] = useState("");
@@ -13,11 +16,10 @@ export const FibonacciPage: React.FC = () => {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fib = getFibonacci(Number(inputVal));
-    console.log(fib);
+    const fib = getFibonacciNumbers(Number(inputVal));
     setLoader(true);
     for (let i=0; i<fib.length; i++){
-      await new Promise<void>((res) => setTimeout(res, 500));
+      await setDelay(SHORT_DELAY_IN_MS);
       setArr(fib.slice(0, i + 1));
     }
     setLoader(false);
@@ -33,8 +35,8 @@ export const FibonacciPage: React.FC = () => {
         <Input
           onChange={onChange}
           value={inputVal}
-          max={19}
-          min={1}
+          max={MAX_VAL_FIB}
+          min={MIN_VAL_FIB}
           isLimitText={true}
           type = "number"
         />

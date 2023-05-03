@@ -9,6 +9,9 @@ import { Circle } from "../ui/circle/circle";
 import { ArrowIcon } from "../ui/icons/arrow-icon";
 import { linkedList, Node } from "./linked-list";
 import { TArrCircle } from "../../types/arr-circle";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { setDelay } from "../../utils/setDelay";
+import { MAX_LENGTH_INPUT, MIN_VAL_INPUT } from "../../constants/element-captions";
 
 
 
@@ -20,6 +23,7 @@ export const ListPage: FC = () => {
     deleteTail: false,
     addIndex: false,
     deleteIndex: false,
+    disabled: false
   });
   const [array, setArray] = useState<Node<TArrCircle>[]>(linkedList.getArray());
   const [inputValue, setInputValue] = useState({
@@ -37,96 +41,95 @@ export const ListPage: FC = () => {
   };
 
   const addHead = async () => {
-    setLoader({ ...loader, addHead: true });
+    setLoader({ ...loader, addHead: true, disabled: true });
     setCircleIndex(array.length);
     setSmallCircle({...addSmallCircle, add:true})
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     setSmallCircle({...addSmallCircle, add:false})
     linkedList.addHead({el: inputValue.value, color: ElementStates.Modified});
     setArray([...linkedList.getArray()]);
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     linkedList.getFirst()!.value.color = ElementStates.Default;
     setArray([...linkedList.getArray()]);
     setInputValue({ value: "", index: "" });
-    setLoader({ ...loader, addHead: false });
+    setLoader({ ...loader, addHead: false, disabled: false });
   };
 
   const addTail = async () => {
-    setLoader({ ...loader, addHead: true });
+    setLoader({ ...loader, addTail: true, disabled: true });
     setCircleIndex(1);
     setSmallCircle({...addSmallCircle, add:true})
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     setSmallCircle({...addSmallCircle, add:false})
     linkedList.addTail({el: inputValue.value, color: ElementStates.Modified});
     setArray([...linkedList.getArray()]);
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     linkedList.getLast()!.value.color = ElementStates.Default;
     setArray([...linkedList.getArray()]);
     setInputValue({ value: "", index: "" });
-    setLoader({ ...loader, addHead: false });
+    setLoader({ ...loader, addTail: false, disabled: false });
   };
 
   const deleteHead = async () => {
-    setLoader({ ...loader, deleteHead: true });
+    setLoader({ ...loader, deleteHead: true, disabled: true });
     setCircleIndex(array.length);
     linkedList.getFirst()!.value.el = "";
     setSmallCircle({...addSmallCircle, delete:true})
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     setSmallCircle({...addSmallCircle, delete:false})
     linkedList.deleteHead();
     setArray([...linkedList.getArray()]);
-    setLoader({ ...loader, deleteHead: false });
+    setLoader({ ...loader, deleteHead: false, disabled: false });
   };
 
   const deleteTail = async () => {
-    setLoader({ ...loader, deleteTail: true });
+    setLoader({ ...loader, deleteTail: true, disabled: true });
     setCircleIndex(1);
     linkedList.getLast()!.value.el = "";
     setSmallCircle({...addSmallCircle, delete:true})
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     setSmallCircle({...addSmallCircle, delete:false})
     linkedList.deleteTail();
     setArray([...linkedList.getArray()]);
-    setLoader({ ...loader, deleteTail: false });
+    setLoader({ ...loader, deleteTail: false, disabled: false });
   };
 
   const addAtIndex = async (value: TArrCircle, index:number) => {
-    setLoader({ ...loader, addIndex: true });
+    setLoader({ ...loader, addIndex: true, disabled: true });
     for(let i=0;i<index;i++){
       setCircleIndex(array.length-i);
       setSmallCircle({...addSmallCircle, add:true})
-      await new Promise<void>((res) => setTimeout(res, 500)); 
+      await setDelay(SHORT_DELAY_IN_MS);
       setSmallCircle({...addSmallCircle, add:false})
     }
     linkedList.addAtIndex(value, index);
     setArray([...linkedList.getArray()]);
-    await new Promise<void>((res) => setTimeout(res, 500)); 
-    //console.log(linkedList.getAtIndex(index));
+    await setDelay(SHORT_DELAY_IN_MS);
     linkedList.getAtIndex(index)!.value.color = ElementStates.Default;
     setArray([...linkedList.getArray()]);
     setInputValue({ value: "", index: "" });
-    setLoader({ ...loader, addIndex: false });
+    setLoader({ ...loader, addIndex: false, disabled: false });
   };
 
   const deleteAtIndex = async (index:number) => {
-    setLoader({ ...loader, deleteIndex: true });
+    setLoader({ ...loader, deleteIndex: true, disabled: true });
     for(let i=0;i<=index;i++){
       setCircleIndex(array.length-i);
       linkedList.getAtIndex(i)!.value.color = ElementStates.Changing;
       setArray([...linkedList.getArray()]);
-      await new Promise<void>((res) => setTimeout(res, 500)); 
+      await setDelay(SHORT_DELAY_IN_MS);
     }
- 
     linkedList.getAtIndex(index)!.value.color = ElementStates.Default;
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS); 
     linkedList.getAtIndex(index)!.value.el = "";
     setSmallCircle({...addSmallCircle, delete:true})
     linkedList.deleteAtIndex(index);
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     setSmallCircle({...addSmallCircle, delete:false})
     linkedList.getArray().forEach((item) => (item.value.color = ElementStates.Default));
     setArray([...linkedList.getArray()]);
-    setLoader({ ...loader, deleteIndex: false });
+    setInputValue({ value: "", index: "" });
+    setLoader({ ...loader, deleteIndex: false, disabled: false });
   };
 
 
@@ -134,7 +137,7 @@ export const ListPage: FC = () => {
     <SolutionLayout title="Связный список">
       <form className={listStyle.form}>
       <Input
-            maxLength={4}
+            maxLength={MAX_LENGTH_INPUT}
             isLimitText
             placeholder="Введите значение"
             name="value"
@@ -147,7 +150,7 @@ export const ListPage: FC = () => {
             text="Добавить в head"
             linkedList="small"
             onClick={addHead}
-            disabled={ !inputValue.value || array.length === 7}
+            disabled={ !inputValue.value || array.length === 7 || loader.disabled}
             isLoader={loader.addHead}
           />
           <Button
@@ -155,7 +158,7 @@ export const ListPage: FC = () => {
             text="Добавить в tail"
             linkedList="small"
             onClick={addTail}
-            disabled={ !inputValue.value || array.length === 7}
+            disabled={ !inputValue.value || array.length === 7 || loader.disabled}
             isLoader={loader.addTail}
           />
           <Button
@@ -163,7 +166,7 @@ export const ListPage: FC = () => {
             text="Удалить из head"
             linkedList="small"
             onClick={deleteHead}
-            disabled={!array || array.length === 0}
+            disabled={!array || array.length === 0 || loader.disabled}
             isLoader={loader.deleteHead}
           />
           <Button
@@ -171,14 +174,14 @@ export const ListPage: FC = () => {
             text="Удалить из tail"
             linkedList="small"
             onClick={deleteTail}
-            disabled={!array || array.length === 0}
+            disabled={!array || array.length === 0 || loader.disabled}
             isLoader={loader.deleteTail}
           />
            <Input
             type="number"
             placeholder="Введите индекс"
             name="index"
-            min={0}
+            min={MIN_VAL_INPUT}
             extraClass={listStyle.input}
             max={array.length - 1}
             value={inputValue.index}
@@ -190,7 +193,7 @@ export const ListPage: FC = () => {
             linkedList="big"
             onClick={() => addAtIndex({el: inputValue.value, color: ElementStates.Modified}, Number(inputValue.index))}
             disabled={!!!(inputValue.index && inputValue.value) ||
-              loader.addIndex ||
+              loader.disabled ||
               Number(inputValue.index) > array.length - 1 ||
               Number(inputValue.index) < 0
             }
@@ -203,7 +206,7 @@ export const ListPage: FC = () => {
             onClick={() => deleteAtIndex(Number(inputValue.index))}
              disabled={
                !inputValue.index ||
-               loader.deleteIndex ||
+               loader.disabled ||
                Number(inputValue.index) > array.length - 1 ||
                Number(inputValue.index) < 0
              }

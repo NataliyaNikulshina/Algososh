@@ -8,6 +8,9 @@ import { ElementStates } from "../../types/element-states";
 import { TArrCircle } from "../../types/arr-circle";
 import { swap } from "../../utils/swap";
 import { nanoid } from "nanoid";
+import { setDelay } from "../../utils/setDelay";
+import { DELAY_IN_MS } from "../../constants/delays";
+import { MAX_LENGTH_STR } from "../../constants/element-captions";
 
 
 export const StringComponent: FC = () => {
@@ -23,7 +26,7 @@ export const StringComponent: FC = () => {
         array[start].color = ElementStates.Changing;
         array[end].color = ElementStates.Changing;
         setArr([...array]);
-        await new Promise<void>((res) => setTimeout(res, 1000));
+        await setDelay(DELAY_IN_MS);
         swap(array, start, end);
       }
         array[start].color = ElementStates.Modified;
@@ -41,12 +44,10 @@ export const StringComponent: FC = () => {
     const array = inputVal.split('').map((el: string) => {
       return {el,color: ElementStates.Default}; 
     });
-   // console.log(array);
     setArr(array);
     setLoader(true);
     await reverseElements(array);
     setLoader(false);
-   // console.log(loader);
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +61,7 @@ export const StringComponent: FC = () => {
         <Input
           onChange={onChange}
           value={inputVal}
-          maxLength={11}
+          maxLength={MAX_LENGTH_STR}
           isLimitText={true}
           type = "text"
         />

@@ -8,6 +8,9 @@ import { nanoid } from "nanoid";
 import { stack } from "./stack";
 import { ElementStates } from "../../types/element-states";
 import { TArrCircle } from "../../types/arr-circle";
+import { setDelay } from "../../utils/setDelay";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { MAX_LENGTH_INPUT } from "../../constants/element-captions";
 
 export const StackPage: FC = () => {
   const [loader, setLoader] = useState<boolean>(false);
@@ -25,7 +28,7 @@ export const StackPage: FC = () => {
     setArr([...stack.getContainer()]);
     setInputVal("");
     setCurrIndex(stack.getSize() - 1);
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     stack.peak()!.color = ElementStates.Default;
     setArr([...stack.getContainer()]);
     setCurrIndex(currIndex + 1);
@@ -38,7 +41,7 @@ export const StackPage: FC = () => {
     stack.peak()!.color = ElementStates.Changing;
     stack.pop();
     setCurrIndex(stack.getSize() - 1);
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     stack.peak()!.color = ElementStates.Default;
     setArr([...stack.getContainer()]);
     setLoader(false);
@@ -47,7 +50,7 @@ export const StackPage: FC = () => {
   const clearEl = async () => {
     setLoader(true);
     setCurrIndex(stack.getSize() - 1);
-    await new Promise<void>((res) => setTimeout(res, 500)); 
+    await setDelay(SHORT_DELAY_IN_MS);
     stack.clear();
     setArr([...stack.getContainer()]);
     setCurrIndex(0)
@@ -60,7 +63,7 @@ export const StackPage: FC = () => {
         <div className={stackStyle.wrapper}>
           <Input
             type = "text"
-            maxLength={4}
+            maxLength={MAX_LENGTH_INPUT}
             isLimitText={true}
             onChange={onChange}
             value={inputVal}
