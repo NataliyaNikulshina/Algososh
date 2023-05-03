@@ -1,3 +1,4 @@
+import { MAX_LEN_QUEUE } from "../../constants/element-captions";
 import { TArrCircle } from "../../types/arr-circle";
 import { ElementStates } from "../../types/element-states";
 
@@ -7,6 +8,7 @@ interface IQueue<T> {
     peak: () => T | null;
     clear: () => void;
     isEmpty: () => void;
+    isFull: () => void;
     getSize: () => number;
     getContainer: () => T[];
   }
@@ -63,6 +65,8 @@ interface IQueue<T> {
 
     getSize = () => this.length;
 
+    isFull = () => this.length === this.size;
+
     getContainer = () => this.container;
 
     getHead = () => this.head;
@@ -70,4 +74,4 @@ interface IQueue<T> {
     getTail = () => this.tail;
   }
 
-  export const queue = new Queue<TArrCircle>(7);
+  export const queue = new Queue<TArrCircle>(MAX_LEN_QUEUE);

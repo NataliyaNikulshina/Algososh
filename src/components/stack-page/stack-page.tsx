@@ -13,7 +13,11 @@ import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { MAX_LENGTH_INPUT } from "../../constants/element-captions";
 
 export const StackPage: FC = () => {
-  const [loader, setLoader] = useState<boolean>(false);
+  const [loader, setLoader] = useState({
+    add: false,
+    delete: false,
+    clear: false,
+  });
   const [arr, setArr] = useState<TArrCircle[]>([]);
   const [currIndex, setCurrIndex] = useState<number>(0);
   const [inputVal, setInputVal] = useState<string>("");
@@ -23,7 +27,7 @@ export const StackPage: FC = () => {
   };
 
   const addElement = async () => {
-    setLoader(true);
+    setLoader({ ...loader, add: true });
     stack.push({ el: inputVal, color: ElementStates.Changing });
     setArr([...stack.getContainer()]);
     setInputVal("");
@@ -33,28 +37,28 @@ export const StackPage: FC = () => {
     setArr([...stack.getContainer()]);
     setCurrIndex(currIndex + 1);
     console.log(arr, currIndex);
-    setLoader(false);
+    setLoader({ ...loader, add: false });
   }
 
   const deleteElement = async () => {
-    setLoader(true);
+    setLoader({ ...loader, delete: true });
     stack.peak()!.color = ElementStates.Changing;
     stack.pop();
     setCurrIndex(stack.getSize() - 1);
     await setDelay(SHORT_DELAY_IN_MS);
     stack.peak()!.color = ElementStates.Default;
     setArr([...stack.getContainer()]);
-    setLoader(false);
+    setLoader({ ...loader, delete: false });
   }
 
   const clearEl = async () => {
-    setLoader(true);
+    setLoader({ ...loader, clear: true });
     setCurrIndex(stack.getSize() - 1);
     await setDelay(SHORT_DELAY_IN_MS);
     stack.clear();
     setArr([...stack.getContainer()]);
     setCurrIndex(0)
-    setLoader(false);
+    setLoader({ ...loader, clear: false });
   }
 
   return (
@@ -71,25 +75,25 @@ export const StackPage: FC = () => {
           <Button
             text="Добавить"
             type="button"
-            disabled={!inputVal}
+            disabled={!inputVal || loader.clear || loader.delete}
             onClick={addElement}
-            isLoader={loader}
+            isLoader={loader.add}
           />
           <Button
             text="Удалить"
             type="button"
-            disabled={currIndex === 0}
+            disabled={currIndex === 0 || loader.clear || loader.add}
             onClick={deleteElement}
             extraClass={stackStyle.button}
-            isLoader={loader}
+            isLoader={loader.delete}
           />
         </div>
         <Button
           text="Очистить"
           type="button"
-          disabled={currIndex === 0}
+          disabled={currIndex === 0 || loader.add || loader.delete}
           onClick={clearEl}
-          isLoader={loader}
+          isLoader={loader.clear}
         />
       </form>
       <ul className={stackStyle.list}>

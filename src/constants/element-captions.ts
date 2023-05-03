@@ -12,3 +12,5 @@ export const MAX_LENGTH_RANDOM_ARR = 17;
 export const MAX_LENGTH_RANDOM_STRARR = 4;
 
 export const MAX_LENGTH_STR = 11;
+
+export const MAX_LEN_QUEUE = 7;

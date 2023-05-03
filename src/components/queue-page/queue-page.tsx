@@ -10,7 +10,7 @@ import { TArrCircle } from "../../types/arr-circle";
 import { queue } from "./queue";
 import { setDelay } from "../../utils/setDelay";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-import { MAX_LENGTH_INPUT } from "../../constants/element-captions";
+import { HEAD, MAX_LENGTH_INPUT, MAX_LEN_QUEUE, TAIL } from "../../constants/element-captions";
 
 export const QueuePage: FC = () => {
   const [loader, setLoader] = useState({
@@ -37,13 +37,16 @@ export const QueuePage: FC = () => {
   };
 
   const deleteElement = async () => {
-    //console.log(queue.getSize());
     setLoader({ ...loader, delete: true });
-    queue.getContainer()[queue.getTail() - 1].color = ElementStates.Default;
+    queue.getContainer()[queue.getHead()].color = ElementStates.Changing;
     setArr([...queue.getContainer()]);
     await setDelay(SHORT_DELAY_IN_MS);
+    queue.getContainer()[queue.getHead()].color = ElementStates.Default;
     queue.dequeue();
     setArr([...queue.getContainer()]);
+    if (queue.isEmpty()) {
+      queue.clear();
+    }
     setLoader({ ...loader, delete: false });
   };
 
@@ -65,18 +68,19 @@ export const QueuePage: FC = () => {
             isLimitText={true}
             onChange={onChange}
             value={inputVal}
+            disabled={queue.isFull()}
           />
           <Button
             text="Добавить"
             type="button"
-            disabled={!inputVal}
+            disabled={!inputVal || queue.isFull() || loader.delete || queue.getTail() === MAX_LEN_QUEUE}
             onClick={addElement}
             isLoader={loader.add}
           />
           <Button
             text="Удалить"
             type="button"
-            disabled={loader.add || queue.isEmpty()}
+            disabled={loader.add || loader.clear || queue.isEmpty()}
             onClick={deleteElement}
             extraClass={queueStyle.button}
             isLoader={loader.delete}
@@ -98,8 +102,8 @@ export const QueuePage: FC = () => {
               index={index}
               letter={el} 
               state={color}
-              head={index === queue.getHead() && !queue.isEmpty() ? "head" : ""}
-              tail={index === queue.getTail() - 1 && !queue.isEmpty() ? "tail" : ""}
+              head={index === queue.getHead() && !queue.isEmpty() ? HEAD : ""}
+              tail={index === queue.getTail() - 1 && !queue.isEmpty() ? TAIL : ""}
             />
           </li>
         ))}
