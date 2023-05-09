@@ -1,0 +1,16 @@
+.form{
+    composes: form from "../string/string.module.css";
+}
+
+
+
+.list{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 48px 0 0;  
+    max-width: 944px;
+    flex-wrap: wrap;
+    margin: auto;
+    gap: 75px 16px;
+}
