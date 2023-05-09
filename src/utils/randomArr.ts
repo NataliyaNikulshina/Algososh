@@ -9,7 +9,6 @@ export const randomArr = (minLen: number, maxLen: number): TArrColumn[] =>{
     for (let i=0; i<len; i++){
         arr.push({ num: Math.round(Math.random() * 100), color: ElementStates.Default });
     }
-   // console.log(len, arr);
   return arr;
 }
 
@@ -19,6 +18,5 @@ export const randomArrStr = (minLen: number, maxLen: number): TArrCircle[] =>{
     for (let i=0; i<len; i++){
         arr.push({ el: String(Math.round(Math.random() * 100)), color: ElementStates.Default });
     }
-   // console.log(len, arr);
   return arr;
 }

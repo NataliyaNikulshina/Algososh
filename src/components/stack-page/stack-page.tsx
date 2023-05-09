@@ -36,7 +36,6 @@ export const StackPage: FC = () => {
     stack.peak()!.color = ElementStates.Default;
     setArr([...stack.getContainer()]);
     setCurrIndex(currIndex + 1);
-    console.log(arr, currIndex);
     setLoader({ ...loader, add: false });
   }
 
