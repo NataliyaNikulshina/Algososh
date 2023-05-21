@@ -34,7 +34,6 @@ export const SortingPage: FC = () => {
   }
 
   const selectionSort = async (arr: TArrColumn[], type: Direction) =>{
-    //console.log(type, arr);
     for (let i = 0; i < arr.length; i++) {
       let maxInd = i;
       for (let j = i + 1; j < arr.length; j++) {
@@ -57,7 +56,6 @@ export const SortingPage: FC = () => {
   }
 
   const bubbleSort = async (arr: TArrColumn[], type: Direction) =>{
-    //console.log(type, arr);
     for (let i=0; i < arr.length; i++){
       for (let j=0; j < arr.length - i - 1; j++){
         arr[j].color = ElementStates.Changing;
