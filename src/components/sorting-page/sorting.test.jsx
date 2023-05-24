@@ -2,22 +2,6 @@ import {selectionSort, bubbleSort, bubbleSortTest, selectionSortTest} from './ut
 import { Direction } from "../../types/direction";
 import {ElementStates} from "../../types/element-states"
 
-const inputArr = [
-    { value: 2, color: ElementStates.Default },
-    { value: 0, color: ElementStates.Default },
-    { value: 1, color: ElementStates.Default },
-  ];
-  const outputArrIncrease = [
-    { value: 0, color: ElementStates.Modified },
-    { value: 1, color: ElementStates.Modified },
-    { value: 2, color: ElementStates.Modified },
-  ];
-  const outputArrDecrease = [
-    { value: 2, color: ElementStates.Modified },
-    { value: 1, color: ElementStates.Modified },
-    { value: 0, color: ElementStates.Modified },
-  ];
-
 describe("Тестирование алгоритмов сортировки выбором и пузырьком", () => {
 
     describe("Сортировка пустого массива", () => {
