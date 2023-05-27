@@ -42,10 +42,9 @@ export const StackPage: FC = () => {
   const deleteElement = async () => {
     setLoader({ ...loader, delete: true });
     stack.peak()!.color = ElementStates.Changing;
-    stack.pop();
     setCurrIndex(stack.getSize() - 1);
     await setDelay(SHORT_DELAY_IN_MS);
-    stack.peak()!.color = ElementStates.Default;
+    stack.pop();
     setArr([...stack.getContainer()]);
     setLoader({ ...loader, delete: false });
   }

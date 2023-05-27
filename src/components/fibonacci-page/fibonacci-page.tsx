@@ -41,7 +41,7 @@ export const FibonacciPage: React.FC = () => {
           type = "number"
         />
         <Button
-          text="Развернуть"
+          text="Рассчитать"
           type="submit"
           isLoader={loader}
           linkedList="small"
