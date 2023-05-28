@@ -2,7 +2,7 @@ import { DELAY_IN_MS, SHORT_DELAY_IN_MS } from "../../src/constants/delays";
 import { DEFAULT_COLOR, CHANGING_COLOR, MODIFIED_COLOR } from '../constants';
 
 
-describe('Проверка корректной визуализации последовательности Фибоначчи', () => {
+describe('Проверка корректной визуализации работы со стеком', () => {
   beforeEach(() => {    
     cy.visit('/stack');
   });
@@ -31,7 +31,7 @@ describe('Проверка корректной визуализации пос�
     cy.contains('Очистить').should("be.disabled");
   });
 
-  it('Очистка стека корректно работает', function () {
+  it('Очистка стека работает корректно', function () {
     const testArr = ["A", "B", "C"];
     testArr.map((item) => {
     cy.get('input').type(item);
