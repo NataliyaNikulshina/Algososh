@@ -7,3 +7,5 @@ export const CIRCLE_CONTENT = '[class*=circle_content]';
 export const CIRCLE_SMALL = '[class*=circle_small]';
 
 export const INPUT = "input";
+export const INPUT_VALUE = "[name='value']";
+export const INPUT_INDEX = "[name='index']";

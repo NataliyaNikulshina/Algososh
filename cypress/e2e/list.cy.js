@@ -1,5 +1,5 @@
-import { DELAY_IN_MS, SHORT_DELAY_IN_MS } from "../../src/constants/delays";
-import { DEFAULT_COLOR, CHANGING_COLOR, MODIFIED_COLOR, CIRCLE, CIRCLE_CONTENT, CIRCLE_SMALL } from '../constants';
+import { SHORT_DELAY_IN_MS } from "../../src/constants/delays";
+import { DEFAULT_COLOR, CHANGING_COLOR, MODIFIED_COLOR, CIRCLE, CIRCLE_CONTENT, CIRCLE_SMALL, INPUT_VALUE, INPUT_INDEX } from '../constants';
 
 
 describe('Проверка корректной визуализации структуры данных Связанный список', () => {
@@ -11,8 +11,8 @@ describe('Проверка корректной визуализации стр�
   });
 
   it('Eсли в полях ввода пусто, то кнопки добавления  и удаления по индексу недоступны', function () {
-    cy.get("[name='value']").should('have.value', '');
-    cy.get("[name='index']").should('have.value', '');
+    cy.get(INPUT_VALUE).should('have.value', '');
+    cy.get(INPUT_INDEX).should('have.value', '');
     cy.contains('Добавить в head').should('be.disabled');
     cy.contains('Добавить в tail').should('be.disabled');
     cy.contains('Добавить по индексу').should('be.disabled');
@@ -47,7 +47,7 @@ describe('Проверка корректной визуализации стр�
   });
 
   it('Добавление элемента в tail работает корректно', function () {
-    cy.get("[name='value']").type('22').should('have.value', '22');
+    cy.get(INPUT_VALUE).type('22').should('have.value', '22');
     cy.contains('Добавить в tail').should('not.be.disabled').click();
     cy.get(CIRCLE_SMALL).should("have.css", "border", CHANGING_COLOR).contains('22');
     cy.wait(SHORT_DELAY_IN_MS);
@@ -70,8 +70,8 @@ describe('Проверка корректной визуализации стр�
   });
 
   it('Добавление элемента по индексу работает корректно', function () {
-    cy.get("[name='value']").type('44').should('have.value', '44');
-    cy.get("[name='index']").type('1').should('have.value', '1');
+    cy.get(INPUT_VALUE).type('44').should('have.value', '44');
+    cy.get(INPUT_INDEX).type('1').should('have.value', '1');
     cy.contains('Добавить по индексу').should('not.be.disabled').click();
     cy.get(CIRCLE_SMALL).should("have.css", "border", CHANGING_COLOR).contains('44');
     cy.wait(SHORT_DELAY_IN_MS);
@@ -82,7 +82,7 @@ describe('Проверка корректной визуализации стр�
   });
 
   it('Удаление элемента по индексу работает корректно', function () {
-    cy.get("[name='index']").type('1').should('have.value', '1');
+    cy.get(INPUT_INDEX).type('1').should('have.value', '1');
     cy.get('@circle').should('have.length', this.size);
     cy.contains('Удалить по индексу').should('not.be.disabled').click();
     cy.get(CIRCLE_SMALL).should("have.css", "border", CHANGING_COLOR).should('not.be.empty');
