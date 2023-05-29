@@ -26,7 +26,8 @@ export const StackPage: FC = () => {
     setInputVal(e.target.value);
   };
 
-  const addElement = async () => {
+  const addElement = async (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
     setLoader({ ...loader, add: true });
     stack.push({ el: inputVal, color: ElementStates.Changing });
     setArr([...stack.getContainer()]);
@@ -42,10 +43,9 @@ export const StackPage: FC = () => {
   const deleteElement = async () => {
     setLoader({ ...loader, delete: true });
     stack.peak()!.color = ElementStates.Changing;
-    stack.pop();
     setCurrIndex(stack.getSize() - 1);
     await setDelay(SHORT_DELAY_IN_MS);
-    stack.peak()!.color = ElementStates.Default;
+    stack.pop();
     setArr([...stack.getContainer()]);
     setLoader({ ...loader, delete: false });
   }
@@ -62,7 +62,7 @@ export const StackPage: FC = () => {
 
   return (
     <SolutionLayout title="Стек">
-      <form className={stackStyle.form} >
+      <form className={stackStyle.form} onSubmit={addElement}>
         <div className={stackStyle.wrapper}>
           <Input
             type = "text"
@@ -73,9 +73,8 @@ export const StackPage: FC = () => {
           />
           <Button
             text="Добавить"
-            type="button"
+            type="submit"
             disabled={!inputVal || loader.clear || loader.delete}
-            onClick={addElement}
             isLoader={loader.add}
           />
           <Button

@@ -73,24 +73,28 @@ export const ListPage: FC = () => {
   const deleteHead = async () => {
     setLoader({ ...loader, deleteHead: true, disabled: true });
     setCircleIndex(array.length);
+    setInputValue({ value: array[0].value.el, index: '0' });
     linkedList.getFirst()!.value.el = "";
     setSmallCircle({...addSmallCircle, delete:true})
     await setDelay(SHORT_DELAY_IN_MS);
     setSmallCircle({...addSmallCircle, delete:false})
     linkedList.deleteHead();
     setArray([...linkedList.getArray()]);
+    setInputValue({ value: "", index: "" });
     setLoader({ ...loader, deleteHead: false, disabled: false });
   };
 
   const deleteTail = async () => {
     setLoader({ ...loader, deleteTail: true, disabled: true });
     setCircleIndex(1);
+    setInputValue({ value: array[array.length-1].value.el, index: (array.length-1).toString()});
     linkedList.getLast()!.value.el = "";
     setSmallCircle({...addSmallCircle, delete:true})
     await setDelay(SHORT_DELAY_IN_MS);
     setSmallCircle({...addSmallCircle, delete:false})
     linkedList.deleteTail();
     setArray([...linkedList.getArray()]);
+    setInputValue({ value: "", index: "" });
     setLoader({ ...loader, deleteTail: false, disabled: false });
   };
 
@@ -121,6 +125,7 @@ export const ListPage: FC = () => {
     }
     linkedList.getAtIndex(index)!.value.color = ElementStates.Default;
     await setDelay(SHORT_DELAY_IN_MS); 
+    setInputValue({ value: array[index].value.el, index: (index).toString()});
     linkedList.getAtIndex(index)!.value.el = "";
     setSmallCircle({...addSmallCircle, delete:true})
     linkedList.deleteAtIndex(index);
