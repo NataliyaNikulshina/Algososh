@@ -25,7 +25,8 @@ export const QueuePage: FC = () => {
     setInputVal(e.target.value);
   };
 
-  const addElement = async () => {
+  const addElement = async (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
     setLoader({ ...loader, add: true });
     queue.enqueue({ el: inputVal, color: ElementStates.Changing });
     setArr([...queue.getContainer()]);
@@ -60,7 +61,7 @@ export const QueuePage: FC = () => {
 
   return (
     <SolutionLayout title="Очередь">
-      <form className={queueStyle.form} >
+      <form className={queueStyle.form} onSubmit={addElement} >
         <div className={queueStyle.wrapper}>
           <Input
             type = "text"
@@ -72,9 +73,8 @@ export const QueuePage: FC = () => {
           />
           <Button
             text="Добавить"
-            type="button"
+            type="submit"
             disabled={!inputVal || queue.isFull() || loader.delete || queue.getTail() === MAX_LEN_QUEUE}
-            onClick={addElement}
             isLoader={loader.add}
           />
           <Button

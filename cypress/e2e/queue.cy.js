@@ -1,7 +1,5 @@
-import { DELAY_IN_MS, SHORT_DELAY_IN_MS } from '../../src/constants/delays';
-import { DEFAULT_COLOR, CHANGING_COLOR, MODIFIED_COLOR } from '../constants';
-import { MAX_LEN_QUEUE } from '../../src/constants/element-captions'
-
+import { SHORT_DELAY_IN_MS } from '../../src/constants/delays';
+import { DEFAULT_COLOR, CHANGING_COLOR, CIRCLE, CIRCLE_CONTENT, INPUT } from '../constants';
 
 describe('Проверка корректной визуализации работы с очередью', () => {
   beforeEach(() => {    
@@ -9,16 +7,16 @@ describe('Проверка корректной визуализации раб�
   });
 
   it('Eсли в поле ввода пусто, то кнопка добавления недоступна', function () {
-    cy.get('input').should('have.value', '');
+    cy.get(INPUT).should('have.value', '');
     cy.contains('Добавить').should('be.disabled');
   });
 
   it('Добавление и удаление элемента в очередь корректно', function () {
     const testArr = ["A", "B", "C"];
-    cy.get('[class*=circle_circle]').as("circle");
-    cy.get('[class^="circle_content"]').as("circle_content");
+    cy.get(CIRCLE).as("circle");
+    cy.get(CIRCLE_CONTENT).as("circle_content");
     testArr.map((item, index) => {
-    cy.get('input').type(item);
+    cy.get(INPUT).type(item);
     cy.contains('Добавить').should("not.be.disabled").click();
     cy.get("@circle").eq(index).should("have.css", "border", CHANGING_COLOR).contains(item);
     cy.get('@circle_content').children("div:first").should("have.text", "head");
@@ -39,13 +37,13 @@ describe('Проверка корректной визуализации раб�
   it('Очистка очереди работает корректно', function () {
     const testArr = ["A", "B", "C"];
     testArr.map((item) => {
-    cy.get('input').type(item);
+    cy.get(INPUT).type(item);
     cy.contains('Добавить').should("not.be.disabled").click();
     cy.wait(SHORT_DELAY_IN_MS)
     });
     cy.wait(3000);
     cy.contains('Очистить').should("not.be.disabled").click();
-    cy.get('[class*=circle_circle]').children().nextAll().should('not.exist');
+    cy.get(CIRCLE).children().nextAll().should('not.exist');
     cy.contains('Удалить').should("be.disabled");
     cy.contains('Очистить').should("be.disabled");
   });
